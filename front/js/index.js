@@ -41,7 +41,19 @@ record.onclick = function () {
 }
 
 let corpInfo = {};
+
 function download() {
+    // get format
+    let formatElement = document.getElementsByName('output-format');
+    let format = "mp4"
+    for (let i = 0; i < formatElement.length; i++) {
+        if (formatElement[i].checked) {
+            corpInfo.format = formatElement[i].value;
+            format = formatElement[i].value;
+            break;
+        }
+    }
+
     const blob = new Blob(recordedBlobs, {type: 'video/webm'});
     let formData = new FormData();
     formData.append('file', blob);
@@ -58,16 +70,18 @@ function download() {
             return;
         }
         res.blob().then(blob => {
-            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
-            a.href = url;
-            a.download = 'download.mp4';
+            a.href = window.URL.createObjectURL(blob);
+            a.download = `download.${format}`;
             document.body.appendChild(a);
             a.click();
         })
     }).catch(err => {
         console.log(err)
+    }).finally(() => {
+        corpInfo = {};
+        recordedBlobs = [];
     })
 }
 
@@ -109,10 +123,8 @@ target.addEventListener('mouseup', () => {
     let widthRatio = video.clientWidth / videoSettings.width;
     let heightRatio = video.clientHeight / videoSettings.height;
     corpInfo = {
-        "x": Math.min(startX, endX) / widthRatio,
-        "y": Math.min(startY, endY) / heightRatio,
-        "width": selectionBox.offsetWidth / widthRatio,
-        "height": selectionBox.offsetHeight / heightRatio
+        "x": Math.min(startX, endX) / widthRatio, "y": Math.min(startY, endY) / heightRatio,
+        "width": selectionBox.offsetWidth / widthRatio, "height": selectionBox.offsetHeight / heightRatio
     };
     startX = null;
     startY = null;

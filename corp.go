@@ -11,6 +11,7 @@ type Corp struct {
 	Y      float64 `json:"y"`
 	Width  float64 `json:"width"`
 	Height float64 `json:"height"`
+	Format string  `json:"format"`
 }
 
 func (c *Corp) isEmpty() bool {
@@ -24,4 +25,11 @@ func (c *Corp) Crop(tempFile *os.File, outFilename string) error {
 	}
 	args = append(args, outFilename)
 	return exec.Command("ffmpeg", args...).Run()
+}
+
+func (c *Corp) GetFormat() string {
+	if c.Format == "" {
+		return "mp4"
+	}
+	return c.Format
 }

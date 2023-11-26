@@ -94,7 +94,7 @@ func (s *Server) download(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	outFilename := fmt.Sprintf("%s_out.mp4", tempFile.Name())
+	outFilename := fmt.Sprintf("%s_out.%s", tempFile.Name(), crop.GetFormat())
 	err = crop.Crop(tempFile, outFilename)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
