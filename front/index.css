@@ -1,0 +1,37 @@
+.flex{
+    display: flex;
+}
+
+.flex-column{
+    flex-direction: column;
+}
+
+.p-10{
+    padding: 10px;
+}
+
+.mt-10{
+    margin-top: 10px;
+}
+
+.m-10{
+    margin: 10px;
+}
+
+.video-container {
+    width: 80%;
+    max-width: 80%;
+}
+
+#video {
+    width: 100%;
+    border: 1px solid #999;
+    position: relative;
+}
+
+#selection-box {
+    border: 2px dashed #000;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
