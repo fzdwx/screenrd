@@ -10,7 +10,7 @@ require:
 - go
 
 ```bash
-go install github.com/fzdwx/screenrd
+go install github.com/fzdwx/screenrd@main
 ```
 
 ## Usage
