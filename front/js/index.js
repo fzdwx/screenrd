@@ -84,35 +84,23 @@ storeRecord.onclick = () => {
 // 获取目标元素和选框元素
 const target = document.getElementById('video');
 const selectionBox = document.getElementById('selection-box');
-let startX, startY;
-let endX, endY;
-// 监听鼠标按下事件
+let startX, startY, endX, endY
 target.addEventListener('mousedown', (e) => {
     startX = e.clientX;
     startY = e.clientY;
-    // 设置选框的初始位置
     selectionBox.style.left = startX + 'px';
     selectionBox.style.top = startY + 'px';
-    // 显示选框
     selectionBox.style.display = 'block';
 });
 // 监听鼠标移动事件
 target.addEventListener('mousemove', (e) => {
     if (startX !== null && startY !== null) {
-        const currentX = e.clientX;
-        const currentY = e.clientY;
-        endX = currentX;
-        endY = currentY;
-        // 计算选框的大小和坐标
-        const width = Math.abs(currentX - startX);
-        const height = Math.abs(currentY - startY);
-        const left = currentX < startX ? currentX : startX;
-        const top = currentY < startY ? currentY : startY;
-        // 更新选框的位置和大小
-        selectionBox.style.width = width + 'px';
-        selectionBox.style.height = height + 'px';
-        selectionBox.style.left = left + 'px';
-        selectionBox.style.top = top + 'px';
+        endX = e.clientX;
+        endY = e.clientY;
+        selectionBox.style.width = Math.abs(e.clientX - startX) + 'px';
+        selectionBox.style.height = Math.abs(e.clientY - startY) + 'px';
+        selectionBox.style.left = e.clientX < startX ? e.clientX : startX + 'px';
+        selectionBox.style.top = e.clientY < startY ? e.clientY : startY + 'px';
     }
 });
 
@@ -132,6 +120,5 @@ target.addEventListener('mouseup', () => {
     selectionBox.style.height = '0';
     selectionBox.style.left = '0';
     selectionBox.style.top = '0';
-    // 隐藏选框
     selectionBox.style.display = 'none';
 });
