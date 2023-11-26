@@ -1,10 +1,14 @@
 const video = document.getElementsByTagName('video')[0];
 const getDisplay = document.getElementById('get-display');
+const record = document.getElementById('record');
+const storeRecord = document.getElementById('stop-record');
+let recordedBlobs = [];
+let corpInfo = {};
 let videoSettings;
+
 getDisplay.onclick = function () {
     navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: false
+        video: true, audio: false
     }).then(stream => {
         videoSettings = stream.getVideoTracks()[0].getSettings();
         video.srcObject = stream;
@@ -13,10 +17,6 @@ getDisplay.onclick = function () {
         console.error(err);
     });
 }
-
-const record = document.getElementById('record');
-const storeRecord = document.getElementById('stop-record');
-let recordedBlobs = [];
 
 function onStartRecord() {
     record.hidden = true;
@@ -40,10 +40,7 @@ record.onclick = function () {
     }
 }
 
-let corpInfo = {};
-
 function download() {
-    // get format
     let formatElement = document.getElementsByName('output-format');
     let format = "mp4"
     for (let i = 0; i < formatElement.length; i++) {
@@ -59,10 +56,7 @@ function download() {
     formData.append('file', blob);
     formData.append('corpInfo', JSON.stringify(corpInfo));
 
-    fetch('/api/download', {
-        method: 'POST',
-        body: formData
-    }).then(res => {
+    fetch('/api/download', {method: 'POST', body: formData}).then(res => {
         if (res.status === 500) {
             res.text().then(text => {
                 alert('裁剪失败: ' + text);
@@ -106,7 +100,6 @@ target.addEventListener('mousedown', (e) => {
     selectionBox.style.top = startY + 'px';
     selectionBox.style.display = 'block';
 });
-// 监听鼠标移动事件
 target.addEventListener('mousemove', (e) => {
     if (startX !== null && startY !== null) {
         endX = e.clientX;
@@ -117,8 +110,6 @@ target.addEventListener('mousemove', (e) => {
         selectionBox.style.top = e.clientY < startY ? e.clientY : startY + 'px';
     }
 });
-
-// 监听鼠标松开事件
 target.addEventListener('mouseup', () => {
     let widthRatio = video.clientWidth / videoSettings.width;
     let heightRatio = video.clientHeight / videoSettings.height;
