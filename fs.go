@@ -1,6 +1,13 @@
 package main
 
-import "embed"
+import (
+	"embed"
+	"net/http"
+)
 
 //go:embed front
-var ff embed.FS
+var frontFs embed.FS
+
+func GetFrontFs() http.FileSystem {
+	return http.FS(frontFs)
+}
